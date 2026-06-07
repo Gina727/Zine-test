@@ -147,7 +147,7 @@ body {
     top: 25px;
     left: 25px;
     padding: 12px 24px; 
-    background-color: #e74c3c;
+    background-color: #1F452F;
     color: white;
     border: none;
     border-radius: 6px;
@@ -161,7 +161,7 @@ body {
 }
 
 #back-button:hover {
-    background-color: #c0392b;
+    background-color: #1F452F;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
@@ -211,7 +211,7 @@ body {
 /* ==========================================================================
    💻 LAPTOP & MONITOR BREAKPOINT (Mac Air / High-Res Monitors)
    ========================================================================== */
-@media (min-width: 1024px) {
+   @media (min-width: 1024px) {
     .library-container {
         max-width: 1000px;
     }
@@ -221,8 +221,13 @@ body {
         height: 270px;
     }
     
+    /* 🌟 ADJUSTED FOR MAX SCREEN FILL ON DESKTOP */
     .book-container {
-        width: 85vw;
-        height: 85vh; /* Expands to fill the beautiful Mac Air display */
+        width: 95vw;   /* Utilizes 95% of screen width */
+        height: 90vh;  /* Utilizes 90% of screen height */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
     }
 }

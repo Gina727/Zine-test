@@ -21,7 +21,7 @@ document.getElementById('back-button').addEventListener('click', () => {
         currentPageFlip = null;
     }
 
-    // 2. WIPE THE BOOK CONTAINER CLEAN
+    // 2. CLEAR CONTAINER VIA OUTER CONTAINER RESET
     const bookContainer = document.getElementById('book');
     bookContainer.innerHTML = '';
     bookContainer.classList.add('hidden');
@@ -46,12 +46,16 @@ async function openBook(pdfUrl) {
         const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
         const totalPages = pdf.numPages;
 
+        // Create a FRESH internal wrapper element that pageFlip can break/modify safely!
+        const flipCanvasWrapper = document.createElement('div');
+        flipCanvasWrapper.id = 'flip-canvas-wrapper';
+        bookContainer.appendChild(flipCanvasWrapper);
+
         for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
             const page = await pdf.getPage(pageNum);
             
-            // Dynamic quality scaling based on screen size
             const isMobile = window.innerWidth <= 440;
-            const renderScale = isMobile ? 1.2 : 2.0; 
+            const renderScale = isMobile ? 1.2 : 3.0; 
             
             const viewport = page.getViewport({ scale: renderScale }); 
             
@@ -68,7 +72,9 @@ async function openBook(pdfUrl) {
             const pageDiv = document.createElement('div');
             pageDiv.className = 'page';
             pageDiv.appendChild(canvas);
-            bookContainer.appendChild(pageDiv);
+            
+            // Append to our FRESH inner wrapper, not the main outer layout block
+            flipCanvasWrapper.appendChild(pageDiv);
         }
 
         // Hide loader and show the populated container
@@ -76,6 +82,7 @@ async function openBook(pdfUrl) {
         bookContainer.classList.remove('hidden');
 
         // Dynamic Layout Settings for devices
+        // --- SECTION 2: Find the layout math and update the limits ---
         const screenWidth = window.innerWidth;
         let bookWidth = 550;
         let bookHeight = 733;
@@ -85,28 +92,29 @@ async function openBook(pdfUrl) {
             bookWidth = 340;
             bookHeight = 500;
             singlePageMode = true; 
-        } else if (screenWidth >= 1400) {
-            bookWidth = 650;
-            bookHeight = 866;
+        } else if (screenWidth >= 1024) {
+            // This is the width per page. In double-page mode, the book width will double (e.g., 1600px wide total)
+            bookWidth = 800; 
+            bookHeight = 1050; 
         }
 
-        // 3. ALWAYS INSTANTIATE A FRESH OBJECT
-        currentPageFlip = new St.PageFlip(bookContainer, {
+        // 3. TARGET THE FRESHLY GENERATED INNER CANVAS WRAPPER OBJECT
+        currentPageFlip = new St.PageFlip(flipCanvasWrapper, {
             width: bookWidth, 
             height: bookHeight, 
             size: "stretch",
             minWidth: 280,
-            maxWidth: 1400,
+            maxWidth: 2000,    
             minHeight: 400,
-            maxHeight: 1800,
+            maxHeight: 2500,   
             maxShadowOpacity: 0.4,
             showCover: !singlePageMode, 
             usePortrait: singlePageMode, 
             mobileScrollSupport: true 
         });
 
-        // Load the freshly rendered HTML structures
-        currentPageFlip.loadFromHTML(document.querySelectorAll('.page'));
+        // Query selector targeted specifically to pages within our new wrapper context
+        currentPageFlip.loadFromHTML(flipCanvasWrapper.querySelectorAll('.page'));
 
     } catch (error) {
         console.error('Error loading book:', error);
