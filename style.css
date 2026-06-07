@@ -1,39 +1,17 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #2c3e50;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow-x: hidden;
-}
-
-.view {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    width: 100vw;
-}
-
-.hidden {
-    display: none !important;
-}
 /* ==========================================================================
    🖋️ FONT IMPORT: GenRyu Serif (源流明體)
-   Download the font file (.woff2 or .otf) from github.com/ButTaiwan/genryu-font
-   and place it in your local folder structure.
    ========================================================================== */
    @font-face {
     font-family: 'GenRyu Serif';
-    /* Adjust path based on where you save your downloaded font file */
-    src: url('fonts/GenRyuMin2TW-Regular.woff2') format('woff2'),
-         url('fonts/GenRyuMin2TW-Regular.otf') format('opentype');
+    src: url('fonts/GenRyuMin2TW-R.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
-/* --- Base Layout Overhauls --- */
+/* ==========================================================================
+   🌍 GLOBAL DEFAULTS
+   ========================================================================== */
 body {
     margin: 0;
     padding: 0;
@@ -51,6 +29,10 @@ body {
     width: 100vw;
     padding: 40px 0;
     box-sizing: border-box;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* Main Heading Styled in GenRyu Serif */
@@ -89,10 +71,8 @@ body {
     height: 240px;
     position: relative;
     cursor: pointer;
-    
-    /* Elegant local wooden shelf base drawn directly under EACH book row */
     background: linear-gradient(to bottom, transparent 92%, #5c3a21 92%, #422917 96%, transparent 96%);
-    padding-bottom: 20px; /* Pulls shelf line down past the book edge */
+    padding-bottom: 20px;
 }
 
 /* The wrapper handling the 3D rotation */
@@ -141,32 +121,8 @@ body {
 }
 
 /* ==========================================================================
-   📱 iPhone 16 RESPONSIVE TWEAKS 
+   📖 READER VIEW STYLES
    ========================================================================== */
-@media (max-width: 440px) {
-    .library-title {
-        font-size: 1.8rem;
-        margin-bottom: 30px;
-        padding: 0 10px;
-    }
-
-    .library-container {
-        max-width: 340px;
-    }
-
-    .shelf-grid {
-        column-gap: 30px; /* Tighter gap to squeeze beautifully on small screens */
-        row-gap: 40px;
-    }
-
-    .book-item {
-        width: 110px; /* Scales down covers so two columns stack flawlessly on iPhone 16 */
-        height: 165px;
-        padding-bottom: 12px;
-    }
-}
-
-/* --- Base Reader Container (Mobile First) --- */
 .book-container {
     width: 95vw;
     height: 70vh;
@@ -183,40 +139,77 @@ body {
     background-color: white;
 }
 
+/* 🎯 FIXED BUTTON WORKAROUND (Changed from .back-button to #back-button)
+   Base styles applied globally first, then fine-tuned inside breakpoints.
+*/
+#back-button {
+    position: fixed; 
+    top: 25px;
+    left: 25px;
+    padding: 12px 24px; 
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem; 
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    z-index: 9999 !important; /* Forces it over the top of Mozilla PDF Canvas layers */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#back-button:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+#back-button:active {
+    transform: translateY(0);
+}
+
 /* ==========================================================================
-   📱 MOBILE BREAKPOINT (e.g., iPhone 16 / 16 Pro / Pro Max)
-   Max-width 440px covers the standard portrait width of modern iPhones.
+   📱 MOBILE BREAKPOINT (iPhone 16 / Portrait Touch Screens)
    ========================================================================== */
 @media (max-width: 440px) {
     .library-title {
         font-size: 1.8rem;
         margin-bottom: 30px;
+        padding: 0 10px;
     }
-    
-    .bookshelf {
-        gap: 15px; /* Tighter gap so 3 covers fit on a small screen */
-        border-bottom-width: 15px;
+
+    .library-container {
+        max-width: 340px;
     }
-    
+
+    .shelf-grid {
+        column-gap: 30px; 
+        row-gap: 40px;
+    }
+
     .book-item {
-        width: 90px;  /* Scale down the covers slightly for mobile */
-        height: 135px;
+        width: 110px; 
+        height: 165px;
+        padding-bottom: 12px;
     }
     
     .book-container {
-        height: 75vh; /* Give more vertical space for portrait view */
+        height: 75vh; 
     }
     
+    /* Shrink the button slightly so it takes less real estate on mobile screens */
     #back-button {
-        top: 10px;
-        left: 10px;
-        padding: 8px 15px;
+        top: 15px;
+        left: 15px;
+        padding: 8px 16px;
         font-size: 0.9rem;
     }
 }
 
 /* ==========================================================================
-   💻 LAPTOP & MONITOR BREAKPOINT (e.g., Mac Air 13"/15" up to 4K Displays)
+   💻 LAPTOP & MONITOR BREAKPOINT (Mac Air / High-Res Monitors)
    ========================================================================== */
 @media (min-width: 1024px) {
     .library-container {
@@ -224,12 +217,12 @@ body {
     }
     
     .book-item {
-        width: 180px; /* Larger covers on big screens */
+        width: 180px; 
         height: 270px;
     }
     
     .book-container {
         width: 85vw;
-        height: 85vh; /* Fill out the gorgeous Mac Air display */
+        height: 85vh; /* Expands to fill the beautiful Mac Air display */
     }
 }

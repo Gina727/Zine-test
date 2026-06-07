@@ -13,36 +13,43 @@ document.querySelectorAll('.book-item').forEach(book => {
 // Back button functionality
 document.getElementById('back-button').addEventListener('click', () => {
     document.getElementById('reader-view').classList.add('hidden');
-    document.getElementById('shelf-view').classList.remove('shelf-view'); // Show shelf
     document.getElementById('shelf-view').classList.remove('hidden');
     
-    // Destroy book instance to free up memory
+    // 1. SAFELY DESTROY THE OLD INSTANCE
     if (currentPageFlip) {
         currentPageFlip.destroy();
         currentPageFlip = null;
     }
+
+    // 2. WIPE THE BOOK CONTAINER CLEAN
+    const bookContainer = document.getElementById('book');
+    bookContainer.innerHTML = '';
+    bookContainer.classList.add('hidden');
 });
 
 async function openBook(pdfUrl) {
+    // Switch Views
     document.getElementById('shelf-view').classList.add('hidden');
     document.getElementById('reader-view').classList.remove('hidden');
     
     const bookContainer = document.getElementById('book');
     const loadingEl = document.getElementById('loading');
+    
+    // Reset state before loading
     bookContainer.classList.add('hidden');
     bookContainer.innerHTML = ''; 
     loadingEl.classList.remove('hidden');
     loadingEl.innerText = 'Loading book pages...';
 
     try {
+        // Load and Render PDF
         const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
         const totalPages = pdf.numPages;
 
         for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
             const page = await pdf.getPage(pageNum);
             
-            // DYNAMIC QUALITY: Render higher resolution for large Mac/Monitors, 
-            // and lower resolution on mobile to save memory.
+            // Dynamic quality scaling based on screen size
             const isMobile = window.innerWidth <= 440;
             const renderScale = isMobile ? 1.2 : 2.0; 
             
@@ -64,26 +71,26 @@ async function openBook(pdfUrl) {
             bookContainer.appendChild(pageDiv);
         }
 
+        // Hide loader and show the populated container
         loadingEl.classList.add('hidden');
         bookContainer.classList.remove('hidden');
 
-        // DYNAMIC LAYOUT SETTINGS
+        // Dynamic Layout Settings for devices
         const screenWidth = window.innerWidth;
         let bookWidth = 550;
         let bookHeight = 733;
         let singlePageMode = false;
 
         if (screenWidth <= 440) {
-            // iPhone 16 settings: Make base dimension match the aspect ratio in single-page mode
             bookWidth = 340;
             bookHeight = 500;
-            singlePageMode = true; // Forces single-page view
+            singlePageMode = true; 
         } else if (screenWidth >= 1400) {
-            // Large External Monitor settings: Blown up sizing
             bookWidth = 650;
             bookHeight = 866;
         }
 
+        // 3. ALWAYS INSTANTIATE A FRESH OBJECT
         currentPageFlip = new St.PageFlip(bookContainer, {
             width: bookWidth, 
             height: bookHeight, 
@@ -93,11 +100,12 @@ async function openBook(pdfUrl) {
             minHeight: 400,
             maxHeight: 1800,
             maxShadowOpacity: 0.4,
-            showCover: !singlePageMode, // Cover behavior makes sense on desktop spreads
-            usePortrait: singlePageMode, // TRUE means single-page (mobile), FALSE means double-page (Mac/Monitor)
-            mobileScrollSupport: true // Allows swipe scrolling gestures on iPhone 16 touch screens
+            showCover: !singlePageMode, 
+            usePortrait: singlePageMode, 
+            mobileScrollSupport: true 
         });
 
+        // Load the freshly rendered HTML structures
         currentPageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
     } catch (error) {
