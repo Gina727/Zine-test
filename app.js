@@ -89,27 +89,26 @@ async function openBook(pdfUrl) {
         let singlePageMode = false;
 
         if (screenWidth <= 440) {
-            bookWidth = 390; 
-            bookHeight = 580;
+            // 🌟 FULL-SCREEN ZOOM FOR MOBILE:
+            // Pushing the height and width up tells Page-Flip to maximize screen estate.
+            bookWidth = 440; 
+            bookHeight = 780;
             singlePageMode = true; 
         } else if (screenWidth >= 1024) {
-            // 🌟 MASSIVE DESKTOP SCALE ADJUSTMENT
-            // This represents a SINGLE page size base. 
-            // In double-page view, the library combines them (making it 1900px wide total base).
             bookWidth = 950; 
             bookHeight = 1250; 
         }
-
+        
         // ALWAYS INSTANTIATE A FRESH OBJECT
         currentPageFlip = new St.PageFlip(flipCanvasWrapper, {
             width: bookWidth, 
             height: bookHeight, 
-            size: "stretch", // 🌟 Allows the canvas elements to scale past their original pixel limits
-            minWidth: 200,   
-            maxWidth: 3000,  // 🌟 Lifted cap to support widescreen Mac retina displays
-            minHeight: 300,
-            maxHeight: 3000, // 🌟 Lifted cap to support widescreen Mac retina displays
-            maxShadowOpacity: 0.4,
+            size: "stretch", 
+            minWidth: 150,   
+            maxWidth: 3000,  
+            minHeight: 200,
+            maxHeight: 3000, 
+            maxShadowOpacity: 0.1, // Lower shadow looks much cleaner when edge-to-edge
             showCover: !singlePageMode, 
             usePortrait: singlePageMode, 
             mobileScrollSupport: true 
