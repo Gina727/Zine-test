@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Digital Bookshelf</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
+</head>
+<body>
+
+    <div id="shelf-view" class="view">
+        <h1 class="library-title">Ramblers' Digital Library</h1>
+        <div class="library-container">
+            <div class="bookshelf">
+                
+                <div class="book-item" data-pdf="books/book1.pdf">
+                    <div class="book-3d">
+                        <img class="book-cover" src="covers/1.png" alt="Design Patterns Cover">
+                        <div class="book-spine-side color-1"></div>
+                    </div>
+                </div>
+    
+                <div class="book-item" data-pdf="books/book2.pdf">
+                    <div class="book-3d">
+                        <img class="book-cover" src="covers/2.png" alt="JS Guide Cover">
+                        <div class="book-spine-side color-2"></div>
+                    </div>
+                </div>
+    
+                <div class="book-item" data-pdf="books/book3.pdf">
+                    <div class="book-3d">
+                        <img class="book-cover" src="covers/3.png" alt="CSS Mastery Cover">
+                        <div class="book-spine-side color-3"></div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+    <div id="reader-view" class="view hidden">
+        <button id="back-button">← Back to Shelf</button>
+        <div class="book-container">
+            <div id="loading">Loading book pages...</div>
+            <div id="book" class="hidden"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
