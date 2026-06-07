@@ -24,11 +24,9 @@ document.getElementById('back-button').addEventListener('click', () => {
 });
 
 async function openBook(pdfUrl) {
-    // 1. Switch Views
     document.getElementById('shelf-view').classList.add('hidden');
     document.getElementById('reader-view').classList.remove('hidden');
     
-    // Reset loader and clear old pages
     const bookContainer = document.getElementById('book');
     const loadingEl = document.getElementById('loading');
     bookContainer.classList.add('hidden');
@@ -37,13 +35,18 @@ async function openBook(pdfUrl) {
     loadingEl.innerText = 'Loading book pages...';
 
     try {
-        // 2. Load and Render PDF
         const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
         const totalPages = pdf.numPages;
 
         for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
             const page = await pdf.getPage(pageNum);
-            const viewport = page.getViewport({ scale: 1.5 }); 
+            
+            // DYNAMIC QUALITY: Render higher resolution for large Mac/Monitors, 
+            // and lower resolution on mobile to save memory.
+            const isMobile = window.innerWidth <= 440;
+            const renderScale = isMobile ? 1.2 : 2.0; 
+            
+            const viewport = page.getViewport({ scale: renderScale }); 
             
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
@@ -61,26 +64,44 @@ async function openBook(pdfUrl) {
             bookContainer.appendChild(pageDiv);
         }
 
-        // 3. Show book and initialize page flip
         loadingEl.classList.add('hidden');
         bookContainer.classList.remove('hidden');
 
+        // DYNAMIC LAYOUT SETTINGS
+        const screenWidth = window.innerWidth;
+        let bookWidth = 550;
+        let bookHeight = 733;
+        let singlePageMode = false;
+
+        if (screenWidth <= 440) {
+            // iPhone 16 settings: Make base dimension match the aspect ratio in single-page mode
+            bookWidth = 340;
+            bookHeight = 500;
+            singlePageMode = true; // Forces single-page view
+        } else if (screenWidth >= 1400) {
+            // Large External Monitor settings: Blown up sizing
+            bookWidth = 650;
+            bookHeight = 866;
+        }
+
         currentPageFlip = new St.PageFlip(bookContainer, {
-            width: 550, 
-            height: 733, 
+            width: bookWidth, 
+            height: bookHeight, 
             size: "stretch",
-            minWidth: 315,
-            maxWidth: 1000,
-            minHeight: 420,
-            maxHeight: 1350,
-            maxShadowOpacity: 0.5,
-            showCover: true,
+            minWidth: 280,
+            maxWidth: 1400,
+            minHeight: 400,
+            maxHeight: 1800,
+            maxShadowOpacity: 0.4,
+            showCover: !singlePageMode, // Cover behavior makes sense on desktop spreads
+            usePortrait: singlePageMode, // TRUE means single-page (mobile), FALSE means double-page (Mac/Monitor)
+            mobileScrollSupport: true // Allows swipe scrolling gestures on iPhone 16 touch screens
         });
 
         currentPageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
     } catch (error) {
         console.error('Error loading book:', error);
-        loadingEl.innerText = 'Error loading PDF. Make sure the file exists and paths are correct.';
+        loadingEl.innerText = 'Error loading PDF.';
     }
 }
