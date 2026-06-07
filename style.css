@@ -216,11 +216,18 @@ body {
         padding-bottom: 12px;
     }
     
+    /* 🌟 ZOOMED EDGE-TO-EDGE CONTAINER FOR IPHONE */
     .book-container {
-        height: 75vh; 
+        width: 100vw;       /* Take up 100% of the screen width */
+        height: 80vh;       /* Allocate plenty of vertical height */
+        padding: 0;         /* Clear all side padding gaps */
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;   /* Prevents accidental horizontal scrolling */
     }
     
-    /* Shrink the button slightly so it takes less real estate on mobile screens */
     #back-button {
         top: 15px;
         left: 15px;
@@ -242,13 +249,23 @@ body {
         height: 270px;
     }
     
-    /* 🌟 ADJUSTED FOR MAX SCREEN FILL ON DESKTOP */
+    /* 🌟 FORCE MAXIMUM SCREEN EXTRACTION */
     .book-container {
-        width: 95vw;   /* Utilizes 95% of screen width */
-        height: 90vh;  /* Utilizes 90% of screen height */
+        width: 95vw !important;   /* Force container to use 95% of screen width */
+        height: 90vh !important;  /* Force container to use 90% of screen height */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    /* Target the dynamic wrapper inside the container */
+    #flip-canvas-wrapper {
+        width: 100% !important;
+        height: 100% !important;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 20px;
     }
 }
