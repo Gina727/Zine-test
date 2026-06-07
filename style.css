@@ -197,33 +197,38 @@ body {
 @media (max-width: 440px) {
     .library-title {
         font-size: 1.8rem;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
         padding: 0 10px;
     }
 
     .library-container {
-        max-width: 340px;
+        max-width: 360px;
     }
 
     .shelf-grid {
-        column-gap: 30px; 
-        row-gap: 70px;     /* 🌟 INCREASED: Pushes the top and bottom book rows further apart */
+        column-gap: 40px; 
+        row-gap: 90px;     /* 🌟 Pushes the grid row tracks significantly far apart */
     }
 
     .book-item {
         width: 110px; 
-        height: auto;     /* Let flexbox calculate height naturally with the text labels */
+        height: auto;
+        margin-bottom: 20px; /* Extra breathing space at the base of each item */
     }
-    
-    .book-container {
-        width: 100vw !important;  /* Take up the total physical width of the phone */
-        height: 85vh !important; /* Leave a small top/bottom gap for the close button */
-        padding: 0 !important;
-        margin: 0 !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        overflow: hidden;
+
+    /* 🌟 LOCKS THE COVER TO ITS TRUE RATIO: 
+       Explicitly defining this ensures the image will NEVER compress or shorten, 
+       maintaining its clean 1:1.5 standard book dimension.
+    */
+    .book-flat {
+        width: 110px !important;
+        height: 165px !important; 
+    }
+
+    .shelf-book-title {
+        margin-top: 12px;
+        font-size: 0.8rem;
+        padding-bottom: 18px; /* Extends the wooden shelf background line cleanly */
     }
 
     #flip-canvas-wrapper {
