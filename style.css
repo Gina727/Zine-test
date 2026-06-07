@@ -216,23 +216,20 @@ body {
         padding-bottom: 12px;
     }
     
-    /* 🌟 ZOOMED EDGE-TO-EDGE CONTAINER FOR IPHONE */
     .book-container {
-        width: 100vw;       /* Take up 100% of the screen width */
-        height: 80vh;       /* Allocate plenty of vertical height */
-        padding: 0;         /* Clear all side padding gaps */
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;   /* Prevents accidental horizontal scrolling */
+        width: 100vw !important;  /* Take up the total physical width of the phone */
+        height: 85vh !important; /* Leave a small top/bottom gap for the close button */
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        overflow: hidden;
     }
-    
-    #back-button {
-        top: 15px;
-        left: 15px;
-        padding: 8px 16px;
-        font-size: 0.9rem;
+
+    #flip-canvas-wrapper {
+        width: 100% !important;
+        height: 100% !important;
     }
 }
 
