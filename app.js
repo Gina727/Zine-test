@@ -89,26 +89,27 @@ async function openBook(pdfUrl) {
         let singlePageMode = false;
 
         if (screenWidth <= 440) {
-            // 🌟 FULL-SCREEN ZOOM FOR MOBILE:
-            // Pushing the height and width up tells Page-Flip to maximize screen estate.
-            bookWidth = 440; 
-            bookHeight = 780;
+            // 🌟 MAX ZOOM FOR IPHONE 16:
+            // Increasing the base numbers here tells the flip script to 
+            // expand closer to the edge boundaries.
+            bookWidth = 390; 
+            bookHeight = 580;
             singlePageMode = true; 
         } else if (screenWidth >= 1024) {
-            bookWidth = 950; 
-            bookHeight = 1250; 
+            bookWidth = 800; 
+            bookHeight = 1050; 
         }
-        
+
         // ALWAYS INSTANTIATE A FRESH OBJECT
         currentPageFlip = new St.PageFlip(flipCanvasWrapper, {
             width: bookWidth, 
             height: bookHeight, 
-            size: "stretch", 
-            minWidth: 150,   
-            maxWidth: 3000,  
-            minHeight: 200,
-            maxHeight: 3000, 
-            maxShadowOpacity: 0.1, // Lower shadow looks much cleaner when edge-to-edge
+            size: "stretch", // 🌟 Forces the book to fill the parent container boundaries
+            minWidth: 200,   // 🌟 Lowered limit so it can squeeze down to 100% mobile widths perfectly
+            maxWidth: 2000,    
+            minHeight: 300,
+            maxHeight: 2500,   
+            maxShadowOpacity: 0.3, // Slightly softer shadow looks cleaner when zoomed in
             showCover: !singlePageMode, 
             usePortrait: singlePageMode, 
             mobileScrollSupport: true 
