@@ -207,7 +207,7 @@ body {
 
     .shelf-grid {
         column-gap: 30px; 
-        row-gap: 40px;
+        row-gap: 60px;
     }
 
     .book-item {
