@@ -207,13 +207,12 @@ body {
 
     .shelf-grid {
         column-gap: 30px; 
-        row-gap: 40px;
+        row-gap: 70px;     /* 🌟 INCREASED: Pushes the top and bottom book rows further apart */
     }
 
     .book-item {
         width: 110px; 
-        height: 165px;
-        padding-bottom: 12px;
+        height: auto;     /* Let flexbox calculate height naturally with the text labels */
     }
     
     .book-container {
