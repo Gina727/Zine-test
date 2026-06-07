@@ -18,49 +18,91 @@ body {
 .hidden {
     display: none !important;
 }
-/* --- New 3D Bookshelf Styles --- */
+/* ==========================================================================
+   🖋️ FONT IMPORT: GenRyu Serif (源流明體)
+   Download the font file (.woff2 or .otf) from github.com/ButTaiwan/genryu-font
+   and place it in your local folder structure.
+   ========================================================================== */
+   @font-face {
+    font-family: 'GenRyu Serif';
+    /* Adjust path based on where you save your downloaded font file */
+    src: url('fonts/GenRyuMin2TW-Regular.woff2') format('woff2'),
+         url('fonts/GenRyuMin2TW-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* --- Base Layout Overhauls --- */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #2c3e50;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+.view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Start from top to allow grid to grow down */
+    min-height: 100vh;
+    width: 100vw;
+    padding: 40px 0;
+    box-sizing: border-box;
+}
+
+/* Main Heading Styled in GenRyu Serif */
 .library-title {
+    font-family: 'GenRyu Serif', 'Noto Serif CJK TC', 'Georgia', serif;
     color: #ecf0f1;
-    margin-bottom: 60px;
-    font-weight: 300;
-    letter-spacing: 2px;
+    margin-bottom: 50px;
+    font-weight: 400;
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .library-container {
     width: 100%;
-    max-width: 900px;
+    max-width: 600px; /* Constrained width ensures columns look tightly balanced */
     padding: 0 20px;
+    box-sizing: border-box;
 }
 
-.bookshelf {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 40px; /* More gap to allow 3D rotation space */
-    border-bottom: 25px solid #5c3a21; /* Rich wood color */
-    border-radius: 4px;
-    padding-bottom: 0px;
-    box-shadow: 0 20px 25px rgba(0,0,0,0.5);
-    /* Creates 3D depth context for the children */
-    perspective: 1000px; 
+/* ==========================================================================
+   🗂️ TWO-COLUMN SHELF GRID SYSTEM
+   ========================================================================== */
+.shelf-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Exactly two columns wide */
+    column-gap: 80px;  /* Spacing between books horizontally */
+    row-gap: 60px;     /* Spacing between rows vertically */
+    justify-items: center;
+    perspective: 1000px; /* 3D depth context for the cards */
 }
 
 .book-item {
     width: 160px;
     height: 240px;
-    margin-bottom: 4px; /* Sits right on the shelf */
+    position: relative;
     cursor: pointer;
+    
+    /* Elegant local wooden shelf base drawn directly under EACH book row */
+    background: linear-gradient(to bottom, transparent 92%, #5c3a21 92%, #422917 96%, transparent 96%);
+    padding-bottom: 20px; /* Pulls shelf line down past the book edge */
 }
 
-/* The wrapper that handles the 3D rotation */
+/* The wrapper handling the 3D rotation */
 .book-3d {
     position: relative;
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    /* Initial angled position on the shelf */
-    transform: rotateY(-25px) translateZ(0px);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    transform: rotateY(-22deg) translateZ(0px);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .book-cover {
@@ -73,33 +115,57 @@ body {
     left: 0;
     z-index: 2;
     backface-visibility: hidden;
-    box-shadow: inset -3px 0 5px rgba(0,0,0,0.2), 5px 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 5px 8px 15px rgba(0,0,0,0.4);
 }
 
-/* The 3D thickness/spine edge of the book */
+/* 3D depth spine element */
 .book-spine-side {
     position: absolute;
     top: 0;
     left: 0;
-    width: 20px; /* Thickness of the book */
+    width: 18px;
     height: 100%;
-    background: #333;
-    /* Pushes the element left and rotates it into 3D space */
-    transform: rotateY(-90deg) translateZ(0px);
+    transform: rotateY(-90deg);
     transform-origin: left;
     z-index: 1;
-    box-shadow: inset -10px 0 20px rgba(0,0,0,0.4);
+    box-shadow: inset -5px 0 15px rgba(0,0,0,0.5);
 }
 
-/* Spine edge colors (Match them roughly to your cover design colors) */
 .color-1 { background-color: #a33429; }
 .color-2 { background-color: #24648f; }
 .color-3 { background-color: #1e7a43; }
 
-/* HOVER EFFECT: The book spins around to face you and floats up */
+/* HOVER EFFECT: Straightens out and floats up */
 .book-item:hover .book-3d {
-    transform: rotateY(0deg) translateY(-15px) translateZ(20px);
+    transform: rotateY(0deg) translateY(-12px) translateZ(15px);
 }
+
+/* ==========================================================================
+   📱 iPhone 16 RESPONSIVE TWEAKS 
+   ========================================================================== */
+@media (max-width: 440px) {
+    .library-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+        padding: 0 10px;
+    }
+
+    .library-container {
+        max-width: 340px;
+    }
+
+    .shelf-grid {
+        column-gap: 30px; /* Tighter gap to squeeze beautifully on small screens */
+        row-gap: 40px;
+    }
+
+    .book-item {
+        width: 110px; /* Scales down covers so two columns stack flawlessly on iPhone 16 */
+        height: 165px;
+        padding-bottom: 12px;
+    }
+}
+
 /* --- Base Reader Container (Mobile First) --- */
 .book-container {
     width: 95vw;
