@@ -266,3 +266,98 @@ body {
         align-items: center;
     }
 }
+
+/* ==========================================================================
+   📸 INFINITE LOOP CONVEYOR GALLERY TRACK
+   ========================================================================== */
+   .gallery-conveyor-container {
+    width: 100vw;
+    overflow: hidden; /* Hides everything moving outside the viewport margins */
+    background: rgba(0, 0, 0, 0.15);
+    padding: 20px 0;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.gallery-track {
+    display: flex;
+    width: max-content; /* 🌟 CRITICAL: Forces all images to stay inline without wrapping */
+    gap: 20px;
+    /* 25s is the speed. 'linear' keeps it moving at a constant pace. 'infinite' repeats it forever */
+    animation: conveyorScroll 25s linear infinite; 
+}
+
+.gallery-track img {
+    height: 150px;
+    width: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    /* 🌟 Prevent browser lazy-loading from miscalculating container widths mid-flight */
+    flex-shrink: 0; 
+}
+
+/* Pause the animation loop smoothly when hovering with your mouse trackpad */
+.gallery-track:hover {
+    animation-play-state: paused;
+}
+
+/* 🌟 THE INFINITE REPEAT MATHEMATICAL TRICK */
+@keyframes conveyorScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Shifts the track left by exactly half its full width. 
+          The browser snaps back to 0% seamlessly without any visual stutter!
+        */
+        transform: translateX(-50%); 
+    }
+}
+
+/* ==========================================================================
+   📸 LIGHTBOX OVERLAY GRAPHICS & ANIMATIONS
+   ========================================================================== */
+   #gallery-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(20, 30, 41, 0.85); /* Deep translucent backdrop */
+    backdrop-filter: blur(8px);               /* Beautiful glass blur effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200000 !important;               /* Higher than the reader view */
+    opacity: 0;
+    pointer-events: none;                     /* Disables clicks while hidden */
+    transition: opacity 0.35s ease;
+}
+
+/* State when the overlay is active and visible */
+#gallery-lightbox.lightbox-active {
+    opacity: 1;
+    pointer-events: auto;                     /* Enables closing interactions */
+}
+
+/* Zoomed-in image boundaries */
+#lightbox-img {
+    max-width: 85vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+    transform: scale(0.8);
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Image pops forward slightly when open */
+#gallery-lightbox.lightbox-active #lightbox-img {
+    transform: scale(1);
+}
+
+/* Changes cursor to indicate clicking empty space will exit */
+#gallery-lightbox {
+    cursor: zoom-out;
+}

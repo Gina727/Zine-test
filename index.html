@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Digital Bookshelf</title>
+    <title>Ramblers' Digital Library</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
@@ -11,50 +11,75 @@
 <body>
 
     <div id="shelf-view" class="view">
-        <!-- Updated Title -->
         <h1 class="library-title">Ramblers' Digital Library</h1>
         
         <div class="library-container">
-            <!-- Two-column grid system -->
             <div class="shelf-grid">
                 
-                <!-- Book 1 -->
                 <div class="book-item" data-pdf="books/book1.pdf">
-                    <div class="book-3d">
-                        <img class="book-cover" src="covers/1.png" alt="Design Patterns Cover">
-                        <div class="book-spine-side color-1"></div>
+                    <div class="book-flat">
+                        <img class="book-cover" src="covers/1.png" alt="Why You Should Hike">
                     </div>
-                    <center><p><span style="color: white;">Why You Should Hike</span></p></center>
+                    <div class="shelf-book-title">Why You Should Hike</div>
                 </div>
 
-                <!-- Book 2 -->
                 <div class="book-item" data-pdf="books/book2.pdf">
-                    <div class="book-3d">
-                        <img class="book-cover" src="covers/2.png" alt="JS Guide Cover">
-                        <div class="book-spine-side color-2"></div>
+                    <div class="book-flat">
+                        <img class="book-cover" src="covers/2.png" alt="Leave No Trace">
                     </div>
-                    <center><p><span style="color: white;">Leave No Trace</span></p></center>
+                    <div class="shelf-book-title">Leave No Trace</div>
                 </div>
 
-                <!-- Book 3 -->
                 <div class="book-item" data-pdf="books/book3.pdf">
-                    <div class="book-3d">
-                        <img class="book-cover" src="covers/3.png" alt="CSS Mastery Cover">
-                        <div class="book-spine-side color-3"></div>
+                    <div class="book-flat">
+                        <img class="book-cover" src="covers/3.png" alt="Ramble Without A Goal">
                     </div>
-                    <center><p><span style="color: white;">Ramble Without A Goal</span></p></center>
+                    <div class="shelf-book-title">Ramble Without A Goal</div>
                 </div>
 
                 <div class="book-item" data-pdf="books/book4.pdf">
-                    <div class="book-3d">
-                        <img class="book-cover" src="covers/4.png" alt="Next.js Cover">
-                        <div class="book-spine-side color-1"></div>
+                    <div class="book-flat">
+                        <img class="book-cover" src="covers/4.png" alt="Book4">
                     </div>
-                    <center><p><span style="color: white;">Book4</span></p></center>
+                    <div class="shelf-book-title">Book4</div>
                 </div> 
 
             </div>
         </div>
+
+        <br>
+
+        <div class="gallery-conveyor-container">
+            <div class="gallery-track">
+                <img src="gallery/photo1.jpg" alt="Gallery Photo 1">
+                <img src="gallery/photo2.jpg" alt="Gallery Photo 2">
+                <img src="gallery/photo3.jpg" alt="Gallery Photo 3">
+                <img src="gallery/photo4.jpg" alt="Gallery Photo 4">
+                <img src="gallery/photo5.jpg" alt="Gallery Photo 5">
+                <img src="gallery/photo6.jpg" alt="Gallery Photo 6">
+                <img src="gallery/photo7.jpg" alt="Gallery Photo 7">
+                <img src="gallery/photo8.jpg" alt="Gallery Photo 8">
+                <img src="gallery/photo9.jpg" alt="Gallery Photo 9">
+                <img src="gallery/photo10.jpg" alt="Gallery Photo 10">
+                <img src="gallery/photo11.jpg" alt="Gallery Photo 11">
+                <img src="gallery/photo12.jpg" alt="Gallery Photo 12">
+
+                <img src="gallery/photo1.jpg" alt="Gallery Photo 1">
+                <img src="gallery/photo2.jpg" alt="Gallery Photo 2">
+                <img src="gallery/photo3.jpg" alt="Gallery Photo 3">
+                <img src="gallery/photo4.jpg" alt="Gallery Photo 4">
+                <img src="gallery/photo5.jpg" alt="Gallery Photo 5">
+                <img src="gallery/photo6.jpg" alt="Gallery Photo 6">
+                <img src="gallery/photo7.jpg" alt="Gallery Photo 7">
+                <img src="gallery/photo8.jpg" alt="Gallery Photo 8">
+                <img src="gallery/photo9.jpg" alt="Gallery Photo 9">
+                <img src="gallery/photo10.jpg" alt="Gallery Photo 10">
+                <img src="gallery/photo11.jpg" alt="Gallery Photo 11">
+                <img src="gallery/photo12.jpg" alt="Gallery Photo 12">
+            </div>
+        </div>
+        
+
         <footer class="shelf-footer">
             <a href="https://www.instagram.com/hku_ramblers/" target="_blank" rel="noopener noreferrer">
                 @hku_ramblers
@@ -70,6 +95,9 @@
         </div>
     </div>
 
+    <div id="gallery-lightbox" class="lightbox-hidden">
+        <img id="lightbox-img" src="" alt="Zoomed Gallery View">
+    </div>
     <script src="app.js"></script>
 </body>
 </html>

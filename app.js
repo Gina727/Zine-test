@@ -123,3 +123,36 @@ async function openBook(pdfUrl) {
         loadingEl.innerText = 'Error loading PDF.';
     }
 }
+
+// ==========================================================================
+// 📸 GALLERY IMAGES ZOOM LIGHTBOX LOGIC
+// ==========================================================================
+const lightbox = document.getElementById('gallery-lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+
+// 1. Listen for clicks on any image inside the moving conveyor belt track
+document.querySelector('.gallery-track').addEventListener('click', (e) => {
+    // Make sure the user actually clicked an image element, not the gap space
+    if (e.target.tagName === 'IMG') {
+        const clickedImgUrl = e.target.src;
+        
+        // Pass the image source over to the overlay element
+        lightboxImg.src = clickedImgUrl;
+        
+        // Reveal the overlay view smoothly
+        lightbox.classList.add('lightbox-active');
+    }
+});
+
+// 2. Close back to normal when clicking anywhere on the empty background space
+lightbox.addEventListener('click', (e) => {
+    // Only close if the user clicks the backdrop container, NOT the actual center image card itself
+    if (e.target === lightbox) {
+        lightbox.classList.remove('lightbox-active');
+        
+        // Wipe the image source clean after transition finishes to keep memory light
+        setTimeout(() => {
+            lightboxImg.src = "";
+        }, 350);
+    }
+});
